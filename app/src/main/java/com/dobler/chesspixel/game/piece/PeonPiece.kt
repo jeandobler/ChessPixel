@@ -20,24 +20,16 @@ class PeonPiece(
     override fun verifyMovements() {
         movements = emptyArray()
 
-        addMovement(positionCol + pieceColor.direction)
+        addMovement(positionCol + pieceColor.direction, positionRow)
         if (startCol == positionCol) {
-            addMovement(positionCol + pieceColor.direction + pieceColor.direction)
+            addMovement(positionCol + pieceColor.direction + pieceColor.direction, positionRow)
         }
-    }
-
-    fun addMovement(positionColAux: Int) {
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (board[positionColAux][positionRow] == null) {
-            movements[movements.size] = Pair(positionColAux, positionRow)
-        }
+        verifyCapture()
     }
 
 
-    override fun verifyCapture() {
+
+    fun verifyCapture() {
         captures = emptyArray()
         val positionColAux = positionCol + pieceColor.direction
 

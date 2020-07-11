@@ -24,7 +24,7 @@ class QueenPiece(
         }
     }
 
-    override fun verifyCapture() {
+    fun verifyCapture() {
         captures = emptyArray()
         val positionColAux = positionCol + pieceColor.direction
 

@@ -12,37 +12,30 @@ class PriestPiece(
 ) {
 
     override fun verifyMovements() {
-        movements = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
 
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (board[positionColAux][positionRow] == null) {
-            movements[movements.size] = Pair(positionColAux, positionRow)
-        }
+//        for (rightUpMovement in positionRow..7) {
+//            if (!addMovement(positionCol, rightMovement)) {
+//                break
+//            }
+//        }
+//
+//        for (leftUpMovement in positionRow downTo 0) {
+//            if (!addMovement(positionCol, leftMovement)) {
+//                break
+//            }
+//        }
+//
+//        for (rightDownMovement in positionCol..7) {
+//            if (!addMovement(upMovement, positionRow)) {
+//                break
+//            }
+//        }
+//
+//        for (leftDownMovement in positionCol downTo 0) {
+//            if (!addMovement(downMovement, positionRow)) {
+//                break
+//            }
+//        }
     }
 
-    override fun verifyCapture() {
-        captures = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
-
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow - 1)
-        }
-
-        if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow + 1)
-        }
-
-    }
 }

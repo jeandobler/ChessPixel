@@ -13,35 +13,29 @@ class TowePiece(
 
     override fun verifyMovements() {
         movements = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
 
-        if (!inBoardLimit(positionColAux)) {
-            return
+        for (rightMovement in positionRow..7) {
+            if (!addMovement(positionCol, rightMovement)) {
+                break
+            }
         }
 
-        if (board[positionColAux][positionRow] == null) {
-            movements[movements.size] = Pair(positionColAux, positionRow)
-        }
-    }
-
-    override fun verifyCapture() {
-        captures = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
-
-        if (!inBoardLimit(positionColAux)) {
-            return
+        for (leftMovement in positionRow downTo 0) {
+            if (!addMovement(positionCol, leftMovement)) {
+                break
+            }
         }
 
-        if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow - 1)
+        for (upMovement in positionCol..7) {
+            if (!addMovement(upMovement, positionRow)) {
+                break
+            }
         }
 
-        if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow + 1)
+        for (downMovement in positionCol downTo 0) {
+            if (!addMovement(downMovement, positionRow)) {
+                break
+            }
         }
 
     }
