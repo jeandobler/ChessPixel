@@ -16,17 +16,19 @@ abstract class AbstractPieces(
     fun inBoardLimit(position: Int): Boolean = position in 0..7
     open fun verifyMovements() {}
 
-    fun addMovement(col: Int, row: Int): Boolean {
+    fun addMovement(col: Int, row: Int, captureOnMove: Boolean = true): Boolean {
 
         if (!inBoardLimit(col) || !inBoardLimit(row)) {
             return false
         }
-        
+
         if (board[col][row] == null) {
             movements[movements.size] = Pair(col, row)
             return true
         } else if (board[col][row] == pieceColor.oppositeColor) {
-            captures[captures.size] = Pair(col, row)
+            if (captureOnMove) {
+                captures[captures.size] = Pair(col, row)
+            }
         }
         return false
     }

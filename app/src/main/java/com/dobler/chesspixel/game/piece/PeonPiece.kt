@@ -20,14 +20,12 @@ class PeonPiece(
     override fun verifyMovements() {
         movements = emptyArray()
 
-        addMovement(positionCol + pieceColor.direction, positionRow)
+        addMovement(positionCol + pieceColor.direction, positionRow, false)
         if (startCol == positionCol) {
-            addMovement(positionCol + pieceColor.direction + pieceColor.direction, positionRow)
+            addMovement(positionCol + pieceColor.direction + pieceColor.direction, positionRow, false)
         }
         verifyCapture()
     }
-
-
 
     fun verifyCapture() {
         captures = emptyArray()
