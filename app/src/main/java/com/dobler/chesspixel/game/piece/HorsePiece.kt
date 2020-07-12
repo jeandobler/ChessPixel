@@ -10,39 +10,22 @@ class HorsePiece(
     pieceColor, positionCol,
     positionRow
 ) {
-
     override fun verifyMovements() {
         movements = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
-
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (board[positionColAux][positionRow] == null) {
-            movements[movements.size] = Pair(positionColAux, positionRow)
-        }
-    }
-
-    fun verifyCapture() {
         captures = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
 
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
+        addMovement(positionCol + 2, positionRow + 1)
+        addMovement(positionCol + 2, positionRow - 1)
 
-        if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow - 1)
-        }
+        addMovement(positionCol - 2, positionRow + 1)
+        addMovement(positionCol - 2, positionRow - 1)
 
-        if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow + 1)
-        }
+        addMovement(positionCol + 1, positionRow + 1)
+        addMovement(positionCol + 1, positionRow - 1)
+
+        addMovement(positionCol - 1, positionRow + 2)
+        addMovement(positionCol - 1, positionRow - 2)
 
     }
+
 }

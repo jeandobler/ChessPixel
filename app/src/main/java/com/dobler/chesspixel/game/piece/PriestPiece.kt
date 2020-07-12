@@ -12,39 +12,48 @@ class PriestPiece(
 ) {
 
     override fun verifyMovements() {
-
-        var sumCol = positionCol
-        var sumRow = positionRow
-        for (rightUpMovement in positionRow..7) {
-            if (!addMovement(sumCol++, sumRow++)) {
-                break
-            }
-        }
-
-        sumCol = positionCol
-        sumRow = positionRow
-        for (rightDownMovement in positionRow..7) {
-            if (!addMovement(sumCol--, sumRow++)) {
-                break
-            }
-        }
-
-
-        sumCol = positionCol
-        sumRow = positionRow
-        for (leftUpMovement in positionRow downTo 0) {
-            if (!addMovement(sumCol++, sumRow--)) {
-                break
-            }
-        }
-
-        sumCol = positionCol
-        sumRow = positionRow
-        for (leftDownMovement in positionRow downTo 0) {
-            if (!addMovement(sumCol--, sumRow--)) {
-                break
-            }
-        }
+        movements = emptyArray()
+        captures = emptyArray()
+        priestMovement(this)
     }
+
+    companion object {
+        fun priestMovement(piece: AbstractPieces) {
+
+            var sumCol = piece.positionCol
+            var sumRow = piece.positionRow
+            for (rightUpMovement in piece.positionRow..7) {
+                if (!piece.addMovement(sumCol++, sumRow++)) {
+                    break
+                }
+            }
+
+            sumCol = piece.positionCol
+            sumRow = piece.positionRow
+            for (rightDownMovement in piece.positionRow..7) {
+                if (!piece.addMovement(sumCol--, sumRow++)) {
+                    break
+                }
+            }
+
+            sumCol = piece.positionCol
+            sumRow = piece.positionRow
+            for (leftUpMovement in piece.positionRow downTo 0) {
+                if (!piece.addMovement(sumCol++, sumRow--)) {
+                    break
+                }
+            }
+
+            sumCol = piece.positionCol
+            sumRow = piece.positionRow
+            for (leftDownMovement in piece.positionRow downTo 0) {
+                if (!piece.addMovement(sumCol--, sumRow--)) {
+                    break
+                }
+            }
+        }
+
+    }
+
 
 }

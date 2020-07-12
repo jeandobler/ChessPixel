@@ -13,36 +13,16 @@ class KingPiece(
 
     override fun verifyMovements() {
         movements = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
-
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (board[positionColAux][positionRow] == null) {
-            movements[movements.size] = Pair(positionColAux, positionRow)
-        }
-    }
-
-    fun verifyCapture() {
         captures = emptyArray()
-        val positionColAux = positionCol + pieceColor.direction
 
-        if (!inBoardLimit(positionColAux)) {
-            return
-        }
-
-        if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow - 1)
-        }
-
-        if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor
-        ) {
-            captures[movements.size] = Pair(positionColAux, positionRow + 1)
+        for (row in -1..1) {
+            addMovement(positionCol + 1, row)
+            if (row != 0) {
+                addMovement(positionCol, row)
+            }
+            addMovement(positionCol - 1, row)
         }
 
     }
+
 }

@@ -13,30 +13,36 @@ class TowePiece(
 
     override fun verifyMovements() {
         movements = emptyArray()
+        captures = emptyArray()
+        towerMovement(this)
+    }
 
-        for (rightMovement in positionRow..7) {
-            if (!addMovement(positionCol, rightMovement)) {
-                break
+    companion object {
+        fun towerMovement(piece: AbstractPieces) {
+
+            for (rightMovement in piece.positionRow..7) {
+                if (!piece.addMovement(piece.positionCol, rightMovement)) {
+                    break
+                }
+            }
+
+            for (leftMovement in piece.positionRow downTo 0) {
+                if (!piece.addMovement(piece.positionCol, leftMovement)) {
+                    break
+                }
+            }
+
+            for (upMovement in piece.positionCol..7) {
+                if (!piece.addMovement(upMovement, piece.positionRow)) {
+                    break
+                }
+            }
+
+            for (downMovement in piece.positionCol downTo 0) {
+                if (!piece.addMovement(downMovement, piece.positionRow)) {
+                    break
+                }
             }
         }
-
-        for (leftMovement in positionRow downTo 0) {
-            if (!addMovement(positionCol, leftMovement)) {
-                break
-            }
-        }
-
-        for (upMovement in positionCol..7) {
-            if (!addMovement(upMovement, positionRow)) {
-                break
-            }
-        }
-
-        for (downMovement in positionCol downTo 0) {
-            if (!addMovement(downMovement, positionRow)) {
-                break
-            }
-        }
-
     }
 }
