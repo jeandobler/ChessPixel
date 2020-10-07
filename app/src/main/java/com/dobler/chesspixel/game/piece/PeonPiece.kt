@@ -36,13 +36,13 @@ class PeonPiece(
         }
 
         if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor
+            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor()
         ) {
             captures[movements.size] = Pair(positionColAux, positionRow - 1)
         }
 
         if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor
+            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor()
         ) {
             captures[movements.size] = Pair(positionColAux, positionRow + 1)
         }

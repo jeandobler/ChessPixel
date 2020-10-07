@@ -1,10 +1,19 @@
 package com.dobler.chesspixel.game
 
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
+import androidx.compose.runtime.Composable
+import androidx.ui.tooling.preview.Preview
 import com.dobler.chesspixel.game.piece.*
 
+//const val EMPY_ARRAY = arrayOf(emptyArray<Pieces?>())
 class Game() {
 
-    var board: Array<Array<Pieces?>> = emptyArray()
+
+    var board: Array<Array<Pieces?>> = arrayOf(emptyArray<Pieces?>())
 
     val colLength = 8
     val rowLength = 8
@@ -13,11 +22,13 @@ class Game() {
     val blackPiecesCaptured: Array<Pieces> = emptyArray()
 
     fun clearBoard() {
-        for (x in 0..7) {
-            for (i in 0..7) {
-                board[x][i] = null
-            }
-        }
+//        board = emptyArray()
+//        for (x in 0..7) {
+            board = Array(8) { Array<Pieces?>(8,{null}) }
+//            for (i in 0..7) {
+//                board[x][i] =  null
+//            }
+//        }
     }
 
     fun startBoard() {
@@ -41,5 +52,7 @@ class Game() {
             board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
         }
     }
+
+
 
 }

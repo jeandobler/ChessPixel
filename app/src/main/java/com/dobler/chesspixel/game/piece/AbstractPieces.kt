@@ -25,7 +25,7 @@ abstract class AbstractPieces(
         if (board[col][row] == null) {
             movements[movements.size] = Pair(col, row)
             return true
-        } else if (board[col][row] == pieceColor.oppositeColor) {
+        } else if (board[col][row] == pieceColor.oppositeColor()) {
             if (captureOnMove) {
                 captures[captures.size] = Pair(col, row)
             }
