@@ -1,5 +1,7 @@
 package com.dobler.chesspixel.game.piece
 
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
 
 class TowePiece(
@@ -11,6 +13,12 @@ class TowePiece(
     positionRow
 ) {
 
+    override val name = "T"
+
+    @Composable
+    override fun image() {
+        Text("")
+    }
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()

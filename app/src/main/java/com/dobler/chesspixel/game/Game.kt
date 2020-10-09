@@ -13,7 +13,8 @@ import com.dobler.chesspixel.game.piece.*
 class Game() {
 
 
-    var board: Array<Array<Pieces?>> = arrayOf(emptyArray<Pieces?>())
+    private var board: Array<Array<Pieces?>> = Array(8) { Array<Pieces?>(8) { null } }
+    var drawedBoard = board
 
     val colLength = 8
     val rowLength = 8
@@ -22,13 +23,7 @@ class Game() {
     val blackPiecesCaptured: Array<Pieces> = emptyArray()
 
     fun clearBoard() {
-//        board = emptyArray()
-//        for (x in 0..7) {
-            board = Array(8) { Array<Pieces?>(8,{null}) }
-//            for (i in 0..7) {
-//                board[x][i] =  null
-//            }
-//        }
+        drawedBoard = Array(8) { Array<Pieces?>(8, { null }) }
     }
 
     fun startBoard() {
@@ -52,7 +47,6 @@ class Game() {
             board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
         }
     }
-
 
 
 }

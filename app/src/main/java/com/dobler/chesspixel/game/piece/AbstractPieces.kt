@@ -1,20 +1,40 @@
 package com.dobler.chesspixel.game.piece
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
+import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
+import java.lang.reflect.Modifier
 
-interface Pieces
+interface Pieces {
+    val name: String
+
+    @Composable
+    fun image()
+
+
+      var movements: Array<Pair<Int, Int>>
+      var captures: Array<Pair<Int, Int>>
+      var board: Array<Array<AbstractPieces?>>
+      fun verifyMovements()
+}
 
 abstract class AbstractPieces(
     var pieceColor: PieceColor,
     var positionCol: Int,
     var positionRow: Int
 ) : Pieces {
-    lateinit var movements: Array<Pair<Int, Int>>
-    lateinit var captures: Array<Pair<Int, Int>>
-    lateinit var board: Array<Array<AbstractPieces?>>
+    override lateinit var movements: Array<Pair<Int, Int>>
+    override lateinit var captures: Array<Pair<Int, Int>>
+    override lateinit var board: Array<Array<AbstractPieces?>>
+    override val name: String = ""
+
+
 
     fun inBoardLimit(position: Int): Boolean = position in 0..7
-    open fun verifyMovements() {}
+
+    override fun verifyMovements() {}
 
     fun addMovement(col: Int, row: Int, captureOnMove: Boolean = true): Boolean {
 

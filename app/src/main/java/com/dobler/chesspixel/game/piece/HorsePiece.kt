@@ -1,5 +1,7 @@
 package com.dobler.chesspixel.game.piece
 
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
 
 class HorsePiece(
@@ -10,9 +12,17 @@ class HorsePiece(
     pieceColor, positionCol,
     positionRow
 ) {
+
+    override val name = "H"
+
+    @Composable
+    override fun image() {
+        Text("")
+    }
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()
+
 
         addMovement(positionCol + 2, positionRow + 1)
         addMovement(positionCol + 2, positionRow - 1)
