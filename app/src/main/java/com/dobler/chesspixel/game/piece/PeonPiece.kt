@@ -73,7 +73,7 @@ class PeonPiece(
 
     @Composable
     override fun image() {
-        Text(text = "P", color = Color.Red)
+        Text(text = "P", color = pieceColor.color)
     }
 
 

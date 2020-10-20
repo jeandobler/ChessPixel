@@ -8,10 +8,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.WithConstraints
+import androidx.compose.ui.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import com.dobler.chesspixel.game.BoardState
 import com.dobler.chesspixel.game.Game
 import com.dobler.chesspixel.game.piece.Pieces
 
@@ -25,27 +31,10 @@ MainActivity : AppCompatActivity() {
         game = Game()
         game.startBoard()
         setContent {
-//            board(game.board, state.col, state.row)
+            board(game.state)
         }
 
     }
-
-
-    class BoardState(
-        board: Array<Array<Pieces?>>,
-        col: Int = 0,
-        row: Int = 0,
-        piece: Pieces? = null,
-        holdingAPiece: Boolean = false
-
-    ) {
-        var col by mutableStateOf(col)
-        var row by mutableStateOf(row)
-        var board by mutableStateOf(board)
-        var piece by mutableStateOf(piece)
-        var holdingAPiece by mutableStateOf(holdingAPiece)
-    }
-
 
     @Preview
     @Composable
@@ -53,23 +42,50 @@ MainActivity : AppCompatActivity() {
         game = Game()
         game.startBoard()
 
-        masterView(BoardState(game.drawedBoard))
+        board(game.state)
     }
+
 
     @Composable
-    fun masterView(state: BoardState) {
-        board(state)
-    }
+    fun board2(state: BoardState) {
+        val modifiere = Modifier.aspectRatio(1f).padding(16.dp).layoutId("gameGrid")
+        val myList = state.board
 
+        val fWeight = 100F
+        WithConstraints(modifiere) {
+            Box(
+                modifier = Modifier.drawBehind {
+                    // Draw the background empty tiles.
+                    for ((rowIndex, rows) in myList.withIndex()) {
+                        for ((colIndex, piece) in rows.withIndex()) {
+                            val color = if ((colIndex + rowIndex) % 2 == 0) {
+                                Color.White
+                            } else {
+                                Color.Black
+                            }
+
+                            drawRoundRect(
+                                color = color,
+                                topLeft = Offset(fWeight * colIndex, fWeight * rowIndex),
+                                size = Size(fWeight, fWeight),
+//                                radius = Radius(500F),
+                            )
+                        }
+                    }
+                }
+            ) {
+
+            }
+        }
+    }
 
     @Composable
     fun board(state: BoardState) {
 
-        val myList = state.board
         Column {
 
-            Text("selected ${state.col + 1} x ${state.row + 1}")
-            for ((rowIndex, rows) in myList.withIndex()) {
+            Text(state.info, color = Color.Gray)
+            for ((rowIndex, rows) in state.board.withIndex()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -77,18 +93,16 @@ MainActivity : AppCompatActivity() {
 
                     for ((colIndex, piece) in rows.withIndex()) {
 
-                        Tile(
-                            rowIndex, colIndex, piece
-                        ) {
-                            state.col = colIndex
-                            state.row = rowIndex
-                            state.piece = piece
+                        Tile(rowIndex, colIndex, piece) {
+                            game.tileClicked(colIndex, rowIndex)
                         }
                     }
                 }
             }
+            Text(state.title, color = Color.Gray)
         }
     }
+
 
     @Composable
     fun tileSelected(col: Int, row: Int, piece: Pieces?, state: BoardState) {
@@ -114,15 +128,10 @@ MainActivity : AppCompatActivity() {
             .width(25.dp).height(25.dp)
             .background(color = color)
 
-        if (piece != null) {
-
-        }
-
         Box(
             alignment = Alignment.Center,
             modifier = mod,
         ) {
-
             piece?.image()
 
         }

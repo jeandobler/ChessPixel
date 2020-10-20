@@ -8,20 +8,21 @@ import com.dobler.chesspixel.game.PieceColor
 import java.lang.reflect.Modifier
 
 interface Pieces {
+    val pieceColor: PieceColor
     val name: String
 
     @Composable
     fun image()
 
+    var movements: Array<Pair<Int, Int>>
+    var captures: Array<Pair<Int, Int>>
+    var board: Array<Array<AbstractPieces?>>
+    fun verifyMovements()
 
-      var movements: Array<Pair<Int, Int>>
-      var captures: Array<Pair<Int, Int>>
-      var board: Array<Array<AbstractPieces?>>
-      fun verifyMovements()
 }
 
 abstract class AbstractPieces(
-    var pieceColor: PieceColor,
+    pieceColor: PieceColor,
     var positionCol: Int,
     var positionRow: Int
 ) : Pieces {
@@ -29,8 +30,7 @@ abstract class AbstractPieces(
     override lateinit var captures: Array<Pair<Int, Int>>
     override lateinit var board: Array<Array<AbstractPieces?>>
     override val name: String = ""
-
-
+    override val pieceColor = pieceColor
 
     fun inBoardLimit(position: Int): Boolean = position in 0..7
 

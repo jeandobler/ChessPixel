@@ -14,10 +14,12 @@ class KingPiece(
 ) {
     override val name = "K"
 
+
     @Composable
     override fun image() {
-        Text("")
+        Text(text = "K", color = pieceColor.color)
     }
+
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()

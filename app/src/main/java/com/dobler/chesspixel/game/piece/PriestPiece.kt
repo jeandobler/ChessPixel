@@ -15,10 +15,12 @@ class PriestPiece(
 
     override val name = "I"
 
+
     @Composable
     override fun image() {
-        Text("")
+        Text(text = "I", color = pieceColor.color)
     }
+
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()
@@ -62,6 +64,8 @@ class PriestPiece(
         }
 
     }
+
+
 
 
 }

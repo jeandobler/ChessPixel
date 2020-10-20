@@ -15,10 +15,12 @@ class HorsePiece(
 
     override val name = "H"
 
+
     @Composable
     override fun image() {
-        Text("")
+        Text(text = "H", color = pieceColor.color)
     }
+
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()

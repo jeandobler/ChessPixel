@@ -15,10 +15,12 @@ class TowePiece(
 
     override val name = "T"
 
+
     @Composable
     override fun image() {
-        Text("")
+        Text(text = "T", color = pieceColor.color)
     }
+
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()

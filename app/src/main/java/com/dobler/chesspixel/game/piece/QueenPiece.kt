@@ -15,10 +15,12 @@ class QueenPiece(
 
     override val name = "Q"
 
+
     @Composable
     override fun image() {
-        Text("")
+        Text(text = "Q", color = pieceColor.color)
     }
+
     override fun verifyMovements() {
         movements = emptyArray()
         captures = emptyArray()
