@@ -20,9 +20,10 @@ class KingPiece(
         Text(text = "K", color = pieceColor.color)
     }
 
-    override fun verifyMovements() {
-        movements = emptyArray()
-        captures = emptyArray()
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {
+        movements = ArrayList()
+        captures = ArrayList()
+        this.board = board
 
         for (row in -1..1) {
             addMovement(positionCol + 1, row)

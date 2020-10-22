@@ -21,12 +21,13 @@ class QueenPiece(
         Text(text = "Q", color = pieceColor.color)
     }
 
-    override fun verifyMovements() {
-        movements = emptyArray()
-        captures = emptyArray()
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {
+        movements = ArrayList()
+        captures = ArrayList()
+        this.board = board
 
         PriestPiece.priestMovement(this)
-        TowePiece.towerMovement(this)
+        TowerPiece.towerMovement(this)
     }
 
 }

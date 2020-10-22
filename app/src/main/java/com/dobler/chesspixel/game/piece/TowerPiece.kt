@@ -4,7 +4,7 @@ import androidx.compose.foundation.Text
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
 
-class TowePiece(
+class TowerPiece(
     pieceColor: PieceColor,
     positionCol: Int,
     positionRow: Int
@@ -21,9 +21,10 @@ class TowePiece(
         Text(text = "T", color = pieceColor.color)
     }
 
-    override fun verifyMovements() {
-        movements = emptyArray()
-        captures = emptyArray()
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {
+        movements= ArrayList()
+        captures = ArrayList()
+        this.board = board
         towerMovement(this)
     }
 

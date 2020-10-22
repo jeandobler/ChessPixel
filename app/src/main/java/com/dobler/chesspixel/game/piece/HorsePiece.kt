@@ -21,10 +21,10 @@ class HorsePiece(
         Text(text = "H", color = pieceColor.color)
     }
 
-    override fun verifyMovements() {
-        movements = emptyArray()
-        captures = emptyArray()
-
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {
+        movements = ArrayList()
+        captures = ArrayList()
+        this.board = board
 
         addMovement(positionCol + 2, positionRow + 1)
         addMovement(positionCol + 2, positionRow - 1)

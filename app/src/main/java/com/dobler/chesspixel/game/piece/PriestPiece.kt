@@ -21,14 +21,17 @@ class PriestPiece(
         Text(text = "I", color = pieceColor.color)
     }
 
-    override fun verifyMovements() {
-        movements = emptyArray()
-        captures = emptyArray()
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {
+        movements = ArrayList()
+        captures = ArrayList()
+        this.board = board
+
         priestMovement(this)
     }
 
     companion object {
         fun priestMovement(piece: AbstractPieces) {
+
 
             var sumCol = piece.positionCol
             var sumRow = piece.positionRow

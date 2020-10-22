@@ -1,40 +1,34 @@
 package com.dobler.chesspixel.game.piece
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
-import java.lang.reflect.Modifier
 
 interface Pieces {
     val pieceColor: PieceColor
     val name: String
+    var movements: ArrayList<Pair<Int, Int>>
+    var captures: ArrayList<Pair<Int, Int>>
+    var board: Array<Array<Pieces?>>
+
+    fun verifyMovements(board: Array<Array<Pieces?>>)
 
     @Composable
     fun image()
-
-    var movements: Array<Pair<Int, Int>>
-    var captures: Array<Pair<Int, Int>>
-    var board: Array<Array<AbstractPieces?>>
-    fun verifyMovements()
-
 }
 
 abstract class AbstractPieces(
-    pieceColor: PieceColor,
+    override val pieceColor: PieceColor,
     var positionCol: Int,
     var positionRow: Int
 ) : Pieces {
-    override lateinit var movements: Array<Pair<Int, Int>>
-    override lateinit var captures: Array<Pair<Int, Int>>
-    override lateinit var board: Array<Array<AbstractPieces?>>
+    override var movements: ArrayList<Pair<Int, Int>> = ArrayList()
+    override var captures: ArrayList<Pair<Int, Int>> = ArrayList()
+    override lateinit var board: Array<Array<Pieces?>>
     override val name: String = ""
-    override val pieceColor = pieceColor
 
     fun inBoardLimit(position: Int): Boolean = position in 0..7
 
-    override fun verifyMovements() {}
+    override fun verifyMovements(board: Array<Array<Pieces?>>) {}
 
     fun addMovement(col: Int, row: Int, captureOnMove: Boolean = true): Boolean {
 
@@ -43,11 +37,11 @@ abstract class AbstractPieces(
         }
 
         if (board[col][row] == null) {
-            movements[movements.size] = Pair(col, row)
+            movements.add(Pair(col, row))
             return true
         } else if (board[col][row] == pieceColor.oppositeColor()) {
             if (captureOnMove) {
-                captures[captures.size] = Pair(col, row)
+                captures.add(Pair(col, row))
             }
         }
         return false

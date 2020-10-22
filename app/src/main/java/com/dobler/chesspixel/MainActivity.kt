@@ -45,46 +45,14 @@ MainActivity : AppCompatActivity() {
         board(game.state)
     }
 
-
-    @Composable
-    fun board2(state: BoardState) {
-        val modifiere = Modifier.aspectRatio(1f).padding(16.dp).layoutId("gameGrid")
-        val myList = state.board
-
-        val fWeight = 100F
-        WithConstraints(modifiere) {
-            Box(
-                modifier = Modifier.drawBehind {
-                    // Draw the background empty tiles.
-                    for ((rowIndex, rows) in myList.withIndex()) {
-                        for ((colIndex, piece) in rows.withIndex()) {
-                            val color = if ((colIndex + rowIndex) % 2 == 0) {
-                                Color.White
-                            } else {
-                                Color.Black
-                            }
-
-                            drawRoundRect(
-                                color = color,
-                                topLeft = Offset(fWeight * colIndex, fWeight * rowIndex),
-                                size = Size(fWeight, fWeight),
-//                                radius = Radius(500F),
-                            )
-                        }
-                    }
-                }
-            ) {
-
-            }
-        }
-    }
-
     @Composable
     fun board(state: BoardState) {
 
         Column {
 
             Text(state.info, color = Color.Gray)
+            Text(state.scoreboard, color = Color.Gray)
+
             for ((rowIndex, rows) in state.board.withIndex()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -92,24 +60,16 @@ MainActivity : AppCompatActivity() {
                 ) {
 
                     for ((colIndex, piece) in rows.withIndex()) {
-
                         Tile(rowIndex, colIndex, piece) {
-                            game.tileClicked(colIndex, rowIndex)
+                            game.tileClicked(rowIndex, colIndex)
                         }
                     }
+
                 }
             }
             Text(state.title, color = Color.Gray)
+            Text(state.warning, color = Color.Gray)
         }
-    }
-
-
-    @Composable
-    fun tileSelected(col: Int, row: Int, piece: Pieces?, state: BoardState) {
-        if (piece != null && !state.holdingAPiece) {
-            state.holdingAPiece = true
-        }
-
     }
 
 
@@ -122,10 +82,9 @@ MainActivity : AppCompatActivity() {
             Color.Black
         }
 
-
         val mod = Modifier
             .clickable(onClick = func)
-            .width(25.dp).height(25.dp)
+            .width(40.dp).height(40.dp)
             .background(color = color)
 
         Box(
@@ -133,10 +92,7 @@ MainActivity : AppCompatActivity() {
             modifier = mod,
         ) {
             piece?.image()
-
         }
-
-
     }
 
 }
