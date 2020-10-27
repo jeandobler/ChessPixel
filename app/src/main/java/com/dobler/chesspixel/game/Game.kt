@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.dobler.chesspixel.game.piece.*
-
+import android.util.Log
 
 class BoardState(
     board: Array<Array<Pieces?>>,
@@ -50,28 +50,28 @@ class Game() {
         arrangePieces(7, 6, WhiteColor())
         state.title = "No piece selected"
         state.info = "Player turn ${state.playerTurn}"
-        updateScoreboard()
+        updateScoreboard(state.board)
 
     }
 
-    fun arrangePieces(startCol: Int, peonCol: Int, pieceColor: PieceColor) {
+    private fun arrangePieces(startCol: Int, peonCol: Int, pieceColor: PieceColor) {
         state.board[startCol][0] = TowerPiece(pieceColor, startCol, 0)
-        state.board[startCol][1] = HorsePiece(pieceColor, startCol, 1)
-        state.board[startCol][2] = PriestPiece(pieceColor, startCol, 2)
-        if (pieceColor is BlackColor) {
-            state.board[startCol][3] = QueenPiece(pieceColor, startCol, 3)
-            state.board[startCol][4] = KingPiece(pieceColor, startCol, 4)
-        } else {
-            state.board[startCol][4] = QueenPiece(pieceColor, startCol, 3)
-            state.board[startCol][3] = KingPiece(pieceColor, startCol, 4)
-        }
-        state.board[startCol][5] = PriestPiece(pieceColor, startCol, 5)
-        state.board[startCol][6] = HorsePiece(pieceColor, startCol, 6)
-        state.board[startCol][7] = TowerPiece(pieceColor, startCol, 7)
+//        state.board[startCol][1] = HorsePiece(pieceColor, startCol, 1)
+//        state.board[startCol][2] = PriestPiece(pieceColor, startCol, 2)
+//        if (pieceColor is BlackColor) {
+//            state.board[startCol][3] = QueenPiece(pieceColor, startCol, 3)
+//            state.board[startCol][4] = KingPiece(pieceColor, startCol, 4)
+//        } else {
+//            state.board[startCol][4] = QueenPiece(pieceColor, startCol, 3)
+//            state.board[startCol][3] = KingPiece(pieceColor, startCol, 4)
+//        }
+//        state.board[startCol][5] = PriestPiece(pieceColor, startCol, 5)
+//        state.board[startCol][6] = HorsePiece(pieceColor, startCol, 6)
+//        state.board[startCol][7] = TowerPiece(pieceColor, startCol, 7)
 
-        for (x in 0..7) {
-            state.board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
-        }
+//        for (x in 0..7) {
+//            state.board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
+//        }
     }
 
 
@@ -98,8 +98,8 @@ class Game() {
         val currentPiece = state.piece
         if (currentPiece != null) {
             if (pieceOnPlace != null) {
-                if (currentPiece.pieceColor != pieceOnPlace.pieceColor) {
-                    if (currentPiece.captures.indexOf(Pair(col, row)) > 0) {
+                if (currentPiece.pieceColor.name != pieceOnPlace.pieceColor.name) {
+                    if (currentPiece.captures.indexOf(Pair(row, col)) > -1) {
                         return true
                     } else {
                         state.warning = "Cannot Capture"
@@ -109,7 +109,7 @@ class Game() {
                 if (currentPiece.movements.indexOf(Pair(row, col)) > -1) {
                     return true
                 } else {
-                    state.warning = currentPiece.movements.toString()
+                    state.warning = currentPiece.captures.toString()
                 }
             }
         }
@@ -122,8 +122,11 @@ class Game() {
 
         if (state.holdingAPiece && state.playerTurn != state.board[row][col]?.pieceColor?.name) {
 
+            logBoard()
+
             if (canPlacePiece(state.board[row][col], row, col)) {
                 state.board[row][col] = state.piece
+                state.board[row][col]?.setPostition(row, col)
                 state.board[selectedRow.first][selectedRow.second] = null
                 state.holdingAPiece = false
 
@@ -131,7 +134,7 @@ class Game() {
                     "Selected ${state.board[row][col]?.name ?: ""}  ${col + 1} x ${row + 1}"
                 selectedRow = Pair(row, col)
 
-                updateScoreboard()
+                updateScoreboard(state.board)
 
                 if (state.playerTurn == PieceColorName.WHITE.name) {
                     state.playerTurn = PieceColorName.BLACK.name
@@ -144,19 +147,29 @@ class Game() {
         }
     }
 
+    private fun logBoard() {
+        for ((rowI, row) in state.board.withIndex()) {
+            for ((colI, piece) in row.withIndex()) {
+                Log.e("Board", "${rowI} ${colI}  ${piece?.name} ")
+            }
+        }
+    }
+
     fun tileClicked(row: Int, col: Int) {
         holdPiece(row, col)
         placePiece(row, col)
     }
 
 
-    private fun updateScoreboard() {
+    private fun updateScoreboard(board: Array<Array<Pieces?>>) {
         state.blackPieces = 0
         state.whitePieces = 0
-        for (row in state.board) {
-            for (piece in row) {
+        for ((rowI, row) in board.withIndex()) {
+            for ((colI, piece) in row.withIndex()) {
                 if (piece != null) {
-                    piece.verifyMovements(state.board)
+
+                    piece.verifyMovements(board)
+
 
                     if (piece.pieceColor.name == PieceColorName.WHITE.name) {
                         state.whitePieces += 1
@@ -167,7 +180,7 @@ class Game() {
                 }
             }
         }
-        state.scoreboard = "Black ${state.blackPieces} White ${state.whitePieces}"
+        state.scoreboard = "Black ${state.blackPieces} White ${state.whitePieces} "
     }
 
 }

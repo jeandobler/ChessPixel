@@ -1,5 +1,6 @@
 package com.dobler.chesspixel.game.piece
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
@@ -23,19 +24,21 @@ class PeonPiece(
 
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
-        this.board = board
-        addMovement(positionCol + pieceColor.direction, positionRow, false)
+//        this.board = board
+
+//        Log.e("Peon", "${positionCol} ${positionRow} ${pieceColor.direction} ${pieceColor.name} ")
+        addMovement(positionCol + pieceColor.direction, positionRow,board, false)
         if (startCol == positionCol) {
             addMovement(
                 positionCol + pieceColor.direction + pieceColor.direction,
-                positionRow,
+                positionRow,board,
                 false
             )
         }
-        verifyCapture()
+        verifyCapture(board)
     }
 
-    fun verifyCapture() {
+    fun verifyCapture(board: Array<Array<Pieces?>>) {
         captures = ArrayList()
         val positionColAux = positionCol + pieceColor.direction
 

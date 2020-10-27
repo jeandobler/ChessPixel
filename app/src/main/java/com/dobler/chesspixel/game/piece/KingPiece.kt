@@ -23,14 +23,14 @@ class KingPiece(
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
         captures = ArrayList()
-        this.board = board
+//        this.board = board
 
         for (row in -1..1) {
-            addMovement(positionCol + 1, row)
+            addMovement(positionCol + 1, row,board)
             if (row != 0) {
-                addMovement(positionCol, row)
+                addMovement(positionCol, row,board)
             }
-            addMovement(positionCol - 1, row)
+            addMovement(positionCol - 1, row,board)
         }
 
     }

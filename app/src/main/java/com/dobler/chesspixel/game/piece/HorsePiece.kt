@@ -24,19 +24,18 @@ class HorsePiece(
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
         captures = ArrayList()
-        this.board = board
 
-        addMovement(positionCol + 2, positionRow + 1)
-        addMovement(positionCol + 2, positionRow - 1)
+        addMovement(positionCol + 2, positionRow + 1,board)
+        addMovement(positionCol + 2, positionRow - 1,board)
 
-        addMovement(positionCol - 2, positionRow + 1)
-        addMovement(positionCol - 2, positionRow - 1)
+        addMovement(positionCol - 2, positionRow + 1,board)
+        addMovement(positionCol - 2, positionRow - 1,board)
 
-        addMovement(positionCol + 1, positionRow + 1)
-        addMovement(positionCol + 1, positionRow - 1)
+        addMovement(positionCol + 1, positionRow + 1,board)
+        addMovement(positionCol + 1, positionRow - 1,board)
 
-        addMovement(positionCol - 1, positionRow + 2)
-        addMovement(positionCol - 1, positionRow - 2)
+        addMovement(positionCol - 1, positionRow + 2,board)
+        addMovement(positionCol - 1, positionRow - 2,board)
 
     }
 

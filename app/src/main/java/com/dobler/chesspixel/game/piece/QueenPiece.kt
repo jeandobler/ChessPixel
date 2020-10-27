@@ -24,10 +24,10 @@ class QueenPiece(
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
         captures = ArrayList()
-        this.board = board
+//        this.board = board
 
-        PriestPiece.priestMovement(this)
-        TowerPiece.towerMovement(this)
+        PriestPiece.priestMovement(this, board)
+        TowerPiece.towerMovement(this, board)
     }
 
 }

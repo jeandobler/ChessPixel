@@ -24,19 +24,18 @@ class PriestPiece(
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
         captures = ArrayList()
-        this.board = board
 
-        priestMovement(this)
+        priestMovement(this, board)
     }
 
     companion object {
-        fun priestMovement(piece: AbstractPieces) {
+        fun priestMovement(piece: AbstractPieces, board: Array<Array<Pieces?>>) {
 
 
             var sumCol = piece.positionCol
             var sumRow = piece.positionRow
             for (rightUpMovement in piece.positionRow..7) {
-                if (!piece.addMovement(sumCol++, sumRow++)) {
+                if (!piece.addMovement(sumCol++, sumRow++,board)) {
                     break
                 }
             }
@@ -44,7 +43,7 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (rightDownMovement in piece.positionRow..7) {
-                if (!piece.addMovement(sumCol--, sumRow++)) {
+                if (!piece.addMovement(sumCol--, sumRow++,board)) {
                     break
                 }
             }
@@ -52,7 +51,7 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (leftUpMovement in piece.positionRow downTo 0) {
-                if (!piece.addMovement(sumCol++, sumRow--)) {
+                if (!piece.addMovement(sumCol++, sumRow--,board)) {
                     break
                 }
             }
@@ -60,7 +59,7 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (leftDownMovement in piece.positionRow downTo 0) {
-                if (!piece.addMovement(sumCol--, sumRow--)) {
+                if (!piece.addMovement(sumCol--, sumRow--,board)) {
                     break
                 }
             }
