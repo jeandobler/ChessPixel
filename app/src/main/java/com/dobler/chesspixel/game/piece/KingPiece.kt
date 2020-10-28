@@ -26,11 +26,11 @@ class KingPiece(
 //        this.board = board
 
         for (row in -1..1) {
-            addMovement(positionCol + 1, row,board)
+            addMovement(positionCol + 1, positionRow + row, board)
             if (row != 0) {
-                addMovement(positionCol, row,board)
+                addMovement(positionCol, positionRow + row, board)
             }
-            addMovement(positionCol - 1, row,board)
+            addMovement(positionCol - 1, positionRow + row, board)
         }
 
     }

@@ -1,6 +1,5 @@
 package com.dobler.chesspixel.game.piece
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
 
@@ -58,6 +57,3 @@ abstract class AbstractPieces(
         return false
     }
 }
-
-
-

@@ -1,5 +1,6 @@
 package com.dobler.chesspixel.game.piece
 
+import android.util.Log
 import androidx.compose.foundation.Text
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
@@ -14,7 +15,6 @@ class PriestPiece(
 ) {
 
     override val name = "I"
-
 
     @Composable
     override fun image() {
@@ -31,11 +31,11 @@ class PriestPiece(
     companion object {
         fun priestMovement(piece: AbstractPieces, board: Array<Array<Pieces?>>) {
 
-
             var sumCol = piece.positionCol
             var sumRow = piece.positionRow
             for (rightUpMovement in piece.positionRow..7) {
-                if (!piece.addMovement(sumCol++, sumRow++,board)) {
+//                Log.e("Movement", "${++sumCol} ${++sumRow} ${piece.pieceColor.name}")
+                if (!piece.addMovement(++sumCol, ++sumRow, board)) {
                     break
                 }
             }
@@ -43,7 +43,7 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (rightDownMovement in piece.positionRow..7) {
-                if (!piece.addMovement(sumCol--, sumRow++,board)) {
+                if (!piece.addMovement(--sumCol, ++sumRow, board)) {
                     break
                 }
             }
@@ -51,7 +51,7 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (leftUpMovement in piece.positionRow downTo 0) {
-                if (!piece.addMovement(sumCol++, sumRow--,board)) {
+                if (!piece.addMovement(++sumCol, --sumRow, board)) {
                     break
                 }
             }
@@ -59,15 +59,12 @@ class PriestPiece(
             sumCol = piece.positionCol
             sumRow = piece.positionRow
             for (leftDownMovement in piece.positionRow downTo 0) {
-                if (!piece.addMovement(sumCol--, sumRow--,board)) {
+                if (!piece.addMovement(--sumCol, --sumRow, board)) {
                     break
                 }
             }
         }
 
     }
-
-
-
 
 }

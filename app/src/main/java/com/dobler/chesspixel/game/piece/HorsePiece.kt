@@ -15,7 +15,6 @@ class HorsePiece(
 
     override val name = "H"
 
-
     @Composable
     override fun image() {
         Text(text = "H", color = pieceColor.color)
@@ -25,17 +24,17 @@ class HorsePiece(
         movements = ArrayList()
         captures = ArrayList()
 
-        addMovement(positionCol + 2, positionRow + 1,board)
-        addMovement(positionCol + 2, positionRow - 1,board)
+        addMovement(positionCol + 2, positionRow + 1, board)
+        addMovement(positionCol + 2, positionRow - 1, board)
 
-        addMovement(positionCol - 2, positionRow + 1,board)
-        addMovement(positionCol - 2, positionRow - 1,board)
+        addMovement(positionCol - 2, positionRow + 1, board)
+        addMovement(positionCol - 2, positionRow - 1, board)
 
-        addMovement(positionCol + 1, positionRow + 1,board)
-        addMovement(positionCol + 1, positionRow - 1,board)
+        addMovement(positionCol + 1, positionRow + 2, board)
+        addMovement(positionCol + 1, positionRow - 2, board)
 
-        addMovement(positionCol - 1, positionRow + 2,board)
-        addMovement(positionCol - 1, positionRow - 2,board)
+        addMovement(positionCol - 1, positionRow + 2, board)
+        addMovement(positionCol - 1, positionRow - 2, board)
 
     }
 

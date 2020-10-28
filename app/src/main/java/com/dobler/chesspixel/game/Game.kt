@@ -56,22 +56,22 @@ class Game() {
 
     private fun arrangePieces(startCol: Int, peonCol: Int, pieceColor: PieceColor) {
         state.board[startCol][0] = TowerPiece(pieceColor, startCol, 0)
-//        state.board[startCol][1] = HorsePiece(pieceColor, startCol, 1)
-//        state.board[startCol][2] = PriestPiece(pieceColor, startCol, 2)
-//        if (pieceColor is BlackColor) {
-//            state.board[startCol][3] = QueenPiece(pieceColor, startCol, 3)
-//            state.board[startCol][4] = KingPiece(pieceColor, startCol, 4)
-//        } else {
-//            state.board[startCol][4] = QueenPiece(pieceColor, startCol, 3)
-//            state.board[startCol][3] = KingPiece(pieceColor, startCol, 4)
-//        }
-//        state.board[startCol][5] = PriestPiece(pieceColor, startCol, 5)
-//        state.board[startCol][6] = HorsePiece(pieceColor, startCol, 6)
-//        state.board[startCol][7] = TowerPiece(pieceColor, startCol, 7)
+        state.board[startCol][1] = HorsePiece(pieceColor, startCol, 1)
+        state.board[startCol][2] = PriestPiece(pieceColor, startCol, 2)
+        if (pieceColor is BlackColor) {
+            state.board[startCol][3] = QueenPiece(pieceColor, startCol, 3)
+            state.board[startCol][4] = KingPiece(pieceColor, startCol, 4)
+        } else {
+            state.board[startCol][4] = QueenPiece(pieceColor, startCol, 3)
+            state.board[startCol][3] = KingPiece(pieceColor, startCol, 4)
+        }
+        state.board[startCol][5] = PriestPiece(pieceColor, startCol, 5)
+        state.board[startCol][6] = HorsePiece(pieceColor, startCol, 6)
+        state.board[startCol][7] = TowerPiece(pieceColor, startCol, 7)
 
-//        for (x in 0..7) {
-//            state.board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
-//        }
+        for (x in 0..7) {
+            state.board[peonCol][x] = PeonPiece(pieceColor, peonCol, x)
+        }
     }
 
 
@@ -84,7 +84,7 @@ class Game() {
                 "Selected ${state.board[row][col]?.name ?: ""}  ${col + 1} x ${row + 1}"
             selectedRow = Pair(row, col)
         } else {
-//            setWarning("Is not ur turn")
+            setWarning("Is not ur turn")
         }
     }
 
@@ -109,7 +109,7 @@ class Game() {
                 if (currentPiece.movements.indexOf(Pair(row, col)) > -1) {
                     return true
                 } else {
-                    state.warning = currentPiece.captures.toString()
+                    state.warning = currentPiece.movements.toString()
                 }
             }
         }
@@ -121,8 +121,6 @@ class Game() {
     private fun placePiece(row: Int, col: Int) {
 
         if (state.holdingAPiece && state.playerTurn != state.board[row][col]?.pieceColor?.name) {
-
-            logBoard()
 
             if (canPlacePiece(state.board[row][col], row, col)) {
                 state.board[row][col] = state.piece
@@ -147,19 +145,10 @@ class Game() {
         }
     }
 
-    private fun logBoard() {
-        for ((rowI, row) in state.board.withIndex()) {
-            for ((colI, piece) in row.withIndex()) {
-                Log.e("Board", "${rowI} ${colI}  ${piece?.name} ")
-            }
-        }
-    }
-
     fun tileClicked(row: Int, col: Int) {
         holdPiece(row, col)
         placePiece(row, col)
     }
-
 
     private fun updateScoreboard(board: Array<Array<Pieces?>>) {
         state.blackPieces = 0
