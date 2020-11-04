@@ -1,6 +1,5 @@
 package com.dobler.chesspixel.game.piece
 
-import android.util.Log
 import androidx.compose.foundation.Text
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
@@ -34,7 +33,6 @@ class PriestPiece(
             var sumCol = piece.positionCol
             var sumRow = piece.positionRow
             for (rightUpMovement in piece.positionRow..7) {
-//                Log.e("Movement", "${++sumCol} ${++sumRow} ${piece.pieceColor.name}")
                 if (!piece.addMovement(++sumCol, ++sumRow, board)) {
                     break
                 }
@@ -64,7 +62,5 @@ class PriestPiece(
                 }
             }
         }
-
     }
-
 }

@@ -8,19 +8,21 @@ interface Pieces {
     val name: String
     var movements: ArrayList<Pair<Int, Int>>
     var captures: ArrayList<Pair<Int, Int>>
-
+    var positionCol: Int
+    var positionRow: Int
     fun setPostition(row: Int, col: Int)
 
     fun verifyMovements(board: Array<Array<Pieces?>>)
 
     @Composable
     fun image()
+    var inCkeck: Boolean
 }
 
 abstract class AbstractPieces(
     override val pieceColor: PieceColor,
-    var positionCol: Int,
-    var positionRow: Int
+    override var positionCol: Int,
+    override var positionRow: Int
 ) : Pieces {
     override var movements: ArrayList<Pair<Int, Int>> = ArrayList()
     override var captures: ArrayList<Pair<Int, Int>> = ArrayList()

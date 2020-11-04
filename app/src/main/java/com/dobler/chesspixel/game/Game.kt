@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.dobler.chesspixel.game.piece.*
-import android.util.Log
 
 class BoardState(
     board: Array<Array<Pieces?>>,
@@ -15,10 +14,11 @@ class BoardState(
     info: String = "",
     warning: String = "",
     scoreboard: String = "",
-    blackPieces: Int = 16,
-    whitePieces: Int = 16
+    kingPiece: Array<Pieces?> = Array(2) { null },
+    blackPieces: ArrayList<Pieces> = ArrayList(),
+    whitePieces: ArrayList<Pieces> = ArrayList(),
 
-) {
+    ) {
     var info by mutableStateOf(info)
     var title by mutableStateOf(title)
     var warning by mutableStateOf(warning)
@@ -26,17 +26,19 @@ class BoardState(
     var board by mutableStateOf(board)
     var piece by mutableStateOf(piece)
     var holdingAPiece by mutableStateOf(holdingAPiece)
-
     var playerTurn by mutableStateOf(playerTurn)
+    var kingPiece by mutableStateOf(kingPiece)
     var blackPieces by mutableStateOf(blackPieces)
     var whitePieces by mutableStateOf(whitePieces)
 }
 
+
 class Game() {
+    val KingBlackPiece = 1
+    val KingWhitePiece = 0
 
     private val board: Array<Array<Pieces?>> = Array(8) { Array<Pieces?>(8) { null } }
     val state = BoardState(board)
-//    var drawedBoard = board
 
     lateinit var selectedRow: Pair<Int, Int>
 
@@ -114,7 +116,6 @@ class Game() {
             }
         }
 
-
         return false
     }
 
@@ -151,25 +152,58 @@ class Game() {
     }
 
     private fun updateScoreboard(board: Array<Array<Pieces?>>) {
-        state.blackPieces = 0
-        state.whitePieces = 0
+        state.whitePieces = ArrayList()
+        state.blackPieces = ArrayList()
+
+
         for ((rowI, row) in board.withIndex()) {
             for ((colI, piece) in row.withIndex()) {
                 if (piece != null) {
-
                     piece.verifyMovements(board)
-
-
-                    if (piece.pieceColor.name == PieceColorName.WHITE.name) {
-                        state.whitePieces += 1
+                    if (piece.pieceColor is WhiteColor) {
+                        state.whitePieces.add(piece)
+                        if (piece is KingPiece) {
+                            state.kingPiece[KingWhitePiece] = piece
+                        }
                     } else {
-                        state.blackPieces += 1
+                        state.blackPieces.add(piece)
+                        if (piece is KingPiece) {
+                            state.kingPiece[KingBlackPiece] = piece
+                        }
                     }
+
 
                 }
             }
         }
-        state.scoreboard = "Black ${state.blackPieces} White ${state.whitePieces} "
+        verifyCheckmate()
+        state.scoreboard = "Black ${state.blackPieces.size} White ${state.whitePieces.size} "
+    }
+
+    private fun verifyCheckmate() {
+
+        val blackKing: Pieces? = state.kingPiece[KingBlackPiece]
+        val whiteKing: Pieces? = state.kingPiece[KingWhitePiece]
+
+        /*
+        Se alguma peça está com captura para o Rei
+        Então ligar flag de Xeque
+
+        Se estiver em xeque e nenhuma peça puder capturar ou ficar na frente da peça 
+        :Criar um array de
+
+
+         */
+        for (i in state.whitePieces) {
+            if (i.captures.indexOf(Pair(blackKing?.positionCol, blackKing?.positionRow)) > -1) {
+
+            }
+        }
+
+        for (i in state.blackPieces) {
+
+        }
+
     }
 
 }

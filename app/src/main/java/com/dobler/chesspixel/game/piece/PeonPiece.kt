@@ -1,6 +1,5 @@
 package com.dobler.chesspixel.game.piece
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.runtime.Composable
 import com.dobler.chesspixel.game.PieceColor
@@ -24,21 +23,19 @@ class PeonPiece(
 
     override fun verifyMovements(board: Array<Array<Pieces?>>) {
         movements = ArrayList()
-//        this.board = board
 
-//        Log.e("Peon", "${positionCol} ${positionRow} ${pieceColor.direction} ${pieceColor.name} ")
-        addMovement(positionCol + pieceColor.direction, positionRow,board, false)
+        addMovement(positionCol + pieceColor.direction, positionRow, board, false)
         if (startCol == positionCol) {
             addMovement(
                 positionCol + pieceColor.direction + pieceColor.direction,
-                positionRow,board,
+                positionRow, board,
                 false
             )
         }
         verifyCapture(board)
     }
 
-    fun verifyCapture(board: Array<Array<Pieces?>>) {
+    private fun verifyCapture(board: Array<Array<Pieces?>>) {
         captures = ArrayList()
         val positionColAux = positionCol + pieceColor.direction
 
@@ -47,15 +44,15 @@ class PeonPiece(
         }
 
         if (inBoardLimit(positionRow - 1)
-            && board[positionColAux][positionRow - 1] == pieceColor.oppositeColor()
+            && board[positionColAux][positionRow - 1]?.pieceColor?.name == pieceColor.oppositeColor().name
         ) {
-            captures[movements.size] = Pair(positionColAux, positionRow - 1)
+            captures.add(Pair(positionColAux, positionRow - 1))
         }
 
         if (inBoardLimit(positionRow + 1)
-            && board[positionColAux][positionRow + 1] == pieceColor.oppositeColor()
+            && board[positionColAux][positionRow + 1]?.pieceColor?.name == pieceColor.oppositeColor().name
         ) {
-            captures[movements.size] = Pair(positionColAux, positionRow + 1)
+            captures.add(Pair(positionColAux, positionRow + 1))
         }
 
     }

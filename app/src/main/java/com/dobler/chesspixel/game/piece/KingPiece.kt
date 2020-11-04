@@ -12,8 +12,9 @@ class KingPiece(
     pieceColor, positionCol,
     positionRow
 ) {
-    override val name = "K"
 
+    override val name = "K"
+    override var inCkeck = false
 
     @Composable
     override fun image() {
