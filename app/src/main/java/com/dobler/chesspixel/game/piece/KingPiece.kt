@@ -14,7 +14,7 @@ class KingPiece(
 ) {
 
     override val name = "K"
-    override var inCkeck = false
+//    override var inCkeck = false
 
     @Composable
     override fun image() {

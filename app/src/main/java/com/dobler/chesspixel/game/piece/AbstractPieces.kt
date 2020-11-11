@@ -16,7 +16,7 @@ interface Pieces {
 
     @Composable
     fun image()
-    var inCkeck: Boolean
+//    var inCkeck: Boolean
 }
 
 abstract class AbstractPieces(

@@ -69,6 +69,7 @@ MainActivity : AppCompatActivity() {
             }
             Text(state.title, color = Color.Gray)
             Text(state.warning, color = Color.Gray)
+            Text(state.check?: "", color = Color.Gray)
         }
     }
 

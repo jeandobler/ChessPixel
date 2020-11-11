@@ -17,6 +17,7 @@ class BoardState(
     kingPiece: Array<Pieces?> = Array(2) { null },
     blackPieces: ArrayList<Pieces> = ArrayList(),
     whitePieces: ArrayList<Pieces> = ArrayList(),
+    check: String? = null,
 
     ) {
     var info by mutableStateOf(info)
@@ -30,6 +31,7 @@ class BoardState(
     var kingPiece by mutableStateOf(kingPiece)
     var blackPieces by mutableStateOf(blackPieces)
     var whitePieces by mutableStateOf(whitePieces)
+    var check by mutableStateOf(check)
 }
 
 
@@ -52,6 +54,7 @@ class Game() {
         arrangePieces(7, 6, WhiteColor())
         state.title = "No piece selected"
         state.info = "Player turn ${state.playerTurn}"
+        updateAvailableMovements(state.board)
         updateScoreboard(state.board)
 
     }
@@ -79,6 +82,8 @@ class Game() {
 
     private fun holdPiece(row: Int, col: Int) {
         setWarning("${state.playerTurn} == ${state.board[row][col]?.pieceColor?.name}")
+        verifyCheckmate()
+
         if (state.playerTurn == state.board[row][col]?.pieceColor?.name) {
             state.holdingAPiece = true
             state.piece = state.board[row][col]
@@ -121,6 +126,7 @@ class Game() {
 
     private fun placePiece(row: Int, col: Int) {
 
+
         if (state.holdingAPiece && state.playerTurn != state.board[row][col]?.pieceColor?.name) {
 
             if (canPlacePiece(state.board[row][col], row, col)) {
@@ -129,21 +135,26 @@ class Game() {
                 state.board[selectedRow.first][selectedRow.second] = null
                 state.holdingAPiece = false
 
-                state.title =
-                    "Selected ${state.board[row][col]?.name ?: ""}  ${col + 1} x ${row + 1}"
+                state.title = " ${state.board[row][col]?.name ?: ""}  ${col + 1} x ${row + 1}"
                 selectedRow = Pair(row, col)
 
+                updateAvailableMovements(state.board)
                 updateScoreboard(state.board)
 
-                if (state.playerTurn == PieceColorName.WHITE.name) {
-                    state.playerTurn = PieceColorName.BLACK.name
-                } else {
-                    state.playerTurn = PieceColorName.WHITE.name
-                }
+                changeTurn()
 
             }
 
         }
+    }
+
+    private fun changeTurn() {
+        if (state.playerTurn == PieceColorName.WHITE.name) {
+            state.playerTurn = PieceColorName.BLACK.name
+        } else {
+            state.playerTurn = PieceColorName.WHITE.name
+        }
+
     }
 
     fun tileClicked(row: Int, col: Int) {
@@ -151,33 +162,40 @@ class Game() {
         placePiece(row, col)
     }
 
+    private fun countBlackAndWhitePieces(piece: Pieces) {
+        if (piece.pieceColor is WhiteColor) {
+            state.whitePieces.add(piece)
+            if (piece is KingPiece) {
+                state.kingPiece[KingWhitePiece] = piece
+            }
+        } else {
+            state.blackPieces.add(piece)
+            if (piece is KingPiece) {
+                state.kingPiece[KingBlackPiece] = piece
+            }
+        }
+    }
+
     private fun updateScoreboard(board: Array<Array<Pieces?>>) {
         state.whitePieces = ArrayList()
         state.blackPieces = ArrayList()
 
-
-        for ((rowI, row) in board.withIndex()) {
-            for ((colI, piece) in row.withIndex()) {
+        for (row in board) {
+            for (piece in row) {
                 if (piece != null) {
-                    piece.verifyMovements(board)
-                    if (piece.pieceColor is WhiteColor) {
-                        state.whitePieces.add(piece)
-                        if (piece is KingPiece) {
-                            state.kingPiece[KingWhitePiece] = piece
-                        }
-                    } else {
-                        state.blackPieces.add(piece)
-                        if (piece is KingPiece) {
-                            state.kingPiece[KingBlackPiece] = piece
-                        }
-                    }
-
-
+                    countBlackAndWhitePieces(piece)
                 }
             }
         }
-        verifyCheckmate()
         state.scoreboard = "Black ${state.blackPieces.size} White ${state.whitePieces.size} "
+    }
+
+    private fun updateAvailableMovements(board: Array<Array<Pieces?>>) {
+        for (row in board) {
+            for (piece in row) {
+                piece?.verifyMovements(board)
+            }
+        }
     }
 
     private fun verifyCheckmate() {
@@ -196,12 +214,24 @@ class Game() {
          */
         for (i in state.whitePieces) {
             if (i.captures.indexOf(Pair(blackKing?.positionCol, blackKing?.positionRow)) > -1) {
-
+                state.check = PieceColorName.BLACK.name
+                state.info = "Black chcke"
             }
         }
 
         for (i in state.blackPieces) {
+            if (i.captures.indexOf(Pair(whiteKing?.positionCol, whiteKing?.positionRow)) > -1) {
+                state.check = PieceColorName.WHITE.name
+                state.info = "White chcke"
+            }
+        }
 
+        if (state.check != null) {
+            if (state.check == PieceColorName.WHITE.name) {
+                state.whitePieces[0].movements
+            } else {
+
+            }
         }
 
     }
