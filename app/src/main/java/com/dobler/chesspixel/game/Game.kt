@@ -36,8 +36,8 @@ class BoardState(
 
 
 class Game() {
-    val KingBlackPiece = 1
-    val KingWhitePiece = 0
+    val kingBlackPiecePlace = 1
+    val kingWhitePiecePlace = 0
 
     private val board: Array<Array<Pieces?>> = Array(8) { Array<Pieces?>(8) { null } }
     val state = BoardState(board)
@@ -82,7 +82,7 @@ class Game() {
 
     private fun holdPiece(row: Int, col: Int) {
         setWarning("${state.playerTurn} == ${state.board[row][col]?.pieceColor?.name}")
-        verifyCheckmate()
+
 
         if (state.playerTurn == state.board[row][col]?.pieceColor?.name) {
             state.holdingAPiece = true
@@ -126,7 +126,6 @@ class Game() {
 
     private fun placePiece(row: Int, col: Int) {
 
-
         if (state.holdingAPiece && state.playerTurn != state.board[row][col]?.pieceColor?.name) {
 
             if (canPlacePiece(state.board[row][col], row, col)) {
@@ -140,7 +139,8 @@ class Game() {
 
                 updateAvailableMovements(state.board)
                 updateScoreboard(state.board)
-
+                isKingInCheck(state.board)
+                verifyCheckeMate()
                 changeTurn()
 
             }
@@ -166,12 +166,12 @@ class Game() {
         if (piece.pieceColor is WhiteColor) {
             state.whitePieces.add(piece)
             if (piece is KingPiece) {
-                state.kingPiece[KingWhitePiece] = piece
+                state.kingPiece[kingWhitePiecePlace] = piece
             }
         } else {
             state.blackPieces.add(piece)
             if (piece is KingPiece) {
-                state.kingPiece[KingBlackPiece] = piece
+                state.kingPiece[kingBlackPiecePlace] = piece
             }
         }
     }
@@ -191,48 +191,96 @@ class Game() {
     }
 
     private fun updateAvailableMovements(board: Array<Array<Pieces?>>) {
-        for (row in board) {
-            for (piece in row) {
-                piece?.verifyMovements(board)
+
+        allTheBoard(board, fun(piece: Pieces?, _: Int, _: Int) {
+            piece?.verifyMovements(board)
+        })
+
+    }
+
+
+    private fun allTheBoard(
+        board: Array<Array<Pieces?>>,
+        func: (piece: Pieces?, rowIndex: Int, colIndex: Int) -> Unit
+    ) {
+        for ((rowIndex, rows) in board.withIndex()) {
+            for ((colIndex, piece) in rows.withIndex()) {
+                func(piece, rowIndex, colIndex)
             }
         }
     }
 
-    private fun verifyCheckmate() {
 
-        val blackKing: Pieces? = state.kingPiece[KingBlackPiece]
-        val whiteKing: Pieces? = state.kingPiece[KingWhitePiece]
-
-        /*
-        Se alguma peça está com captura para o Rei
-        Então ligar flag de Xeque
-
-        Se estiver em xeque e nenhuma peça puder capturar ou ficar na frente da peça 
-        :Criar um array de
-
-
+    private fun foo() {
+        /**
+         *
+         * Vez das peças brancas
+         * O rei preto ficou em check
+         * Vez das peças pretas
+         * Verificar todos os movimentos e capturas das peças pretas
+         * Após cada movimento e cada captura verificar se o rei ainda está em check
+         * Caso ainda esteja então Checkmate
+         *
          */
-        for (i in state.whitePieces) {
-            if (i.captures.indexOf(Pair(blackKing?.positionCol, blackKing?.positionRow)) > -1) {
-                state.check = PieceColorName.BLACK.name
-                state.info = "Black chcke"
-            }
-        }
 
-        for (i in state.blackPieces) {
-            if (i.captures.indexOf(Pair(whiteKing?.positionCol, whiteKing?.positionRow)) > -1) {
-                state.check = PieceColorName.WHITE.name
-                state.info = "White chcke"
+        allTheBoard(state.board, fun(piece: Pieces?, _: Int, _: Int) {
+            if(piece?.pieceColor?.name  ==  PieceColorName.WHITE.name){
+               piece.movements
             }
-        }
+        })
 
+
+    }
+
+    private fun verifyCheckeMate() {
         if (state.check != null) {
             if (state.check == PieceColorName.WHITE.name) {
-                state.whitePieces[0].movements
+
+                for (i in state.whitePieces) {
+
+                }
+
             } else {
 
             }
         }
+
+    }
+
+    private fun isKingInCheck(
+        board: Array<Array<Pieces?>>,
+        useDefaultKings: Pair<Pieces?, Pieces?>? = null
+    ) {
+
+        val whiteKing: Pieces? = useDefaultKings?.first ?: state.kingPiece[kingWhitePiecePlace]
+        val blackKing: Pieces? = useDefaultKings?.second ?: state.kingPiece[kingBlackPiecePlace]
+
+        allTheBoard(board, fun(piece: Pieces?, _: Int, _: Int) {
+            if (piece != null) {
+                if (piece.captures.indexOf(
+                        Pair(
+                            blackKing?.positionCol,
+                            blackKing?.positionRow
+                        )
+                    ) > -1
+                ) {
+                    state.check = PieceColorName.BLACK.name
+                    state.info = "Black chcke"
+                }
+
+                if (piece.captures.indexOf(
+                        Pair(
+                            whiteKing?.positionCol,
+                            whiteKing?.positionRow
+                        )
+                    ) > -1
+                ) {
+                    state.check = PieceColorName.WHITE.name
+                    state.info = "White chcke"
+                }
+            }
+
+        })
 
     }
 
